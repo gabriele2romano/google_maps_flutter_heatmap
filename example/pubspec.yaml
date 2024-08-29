@@ -1,13 +1,16 @@
 name: google_maps_flutter_heatmap_example
 description: Demonstrates how to use the google_maps_flutter_heatmap plugin.
 
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.0
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   google_maps_flutter_heatmap:
@@ -15,7 +18,7 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   test: ^1.6.0
-  e2e: ^0.2.1
+  flutter_e2e: ^1.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

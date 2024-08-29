@@ -16,45 +16,45 @@ class GoogleMapInspector {
   final MethodChannel _channel;
 
   Future<bool> isCompassEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isCompassEnabled');
+    return await _channel.invokeMethod<bool>('map#isCompassEnabled') ?? false;
   }
 
   Future<bool> isMapToolbarEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isMapToolbarEnabled');
+    return await _channel.invokeMethod<bool>('map#isMapToolbarEnabled') ?? false;
   }
 
   Future<MinMaxZoomPreference> getMinMaxZoomLevels() async {
     final List<double> zoomLevels =
-        (await _channel.invokeMethod<List<dynamic>>('map#getMinMaxZoomLevels'))
+        (await _channel.invokeMethod<List<dynamic>>('map#getMinMaxZoomLevels'))!
             .cast<double>();
     return MinMaxZoomPreference(zoomLevels[0], zoomLevels[1]);
   }
 
   Future<bool> isZoomGesturesEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isZoomGesturesEnabled');
+    return await _channel.invokeMethod<bool>('map#isZoomGesturesEnabled') ?? false;
   }
 
   Future<bool> isRotateGesturesEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isRotateGesturesEnabled');
+    return await _channel.invokeMethod<bool>('map#isRotateGesturesEnabled') ?? false;
   }
 
   Future<bool> isTiltGesturesEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isTiltGesturesEnabled');
+    return await _channel.invokeMethod<bool>('map#isTiltGesturesEnabled') ?? false;
   }
 
   Future<bool> isScrollGesturesEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isScrollGesturesEnabled');
+    return await _channel.invokeMethod<bool>('map#isScrollGesturesEnabled') ?? false;
   }
 
   Future<bool> isMyLocationButtonEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isMyLocationButtonEnabled');
+    return await _channel.invokeMethod<bool>('map#isMyLocationButtonEnabled') ?? false;
   }
 
   Future<bool> isTrafficEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isTrafficEnabled');
+    return await _channel.invokeMethod<bool>('map#isTrafficEnabled') ?? false;
   }
 
   Future<bool> isBuildingsEnabled() async {
-    return await _channel.invokeMethod<bool>('map#isBuildingsEnabled');
+    return await _channel.invokeMethod<bool>('map#isBuildingsEnabled') ?? false;
   }
 }

@@ -6,10 +6,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'package:e2e/e2e.dart';
 
 import 'google_map_inspector.dart';
 
@@ -19,7 +17,6 @@ const CameraPosition _kInitialCameraPosition =
     CameraPosition(target: _kInitialMapCenter, zoom: _kInitialZoomLevel);
 
 void main() {
-  E2EWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('testCompassToggle', (WidgetTester tester) async {
     final Key key = GlobalKey();
@@ -34,14 +31,14 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
     ));
 
     final GoogleMapInspector inspector = await inspectorCompleter.future;
-    bool compassEnabled = await inspector.isCompassEnabled();
+    bool? compassEnabled = await inspector.isCompassEnabled();
     expect(compassEnabled, false);
 
     await tester.pumpWidget(Directionality(
@@ -74,14 +71,14 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
     ));
 
     final GoogleMapInspector inspector = await inspectorCompleter.future;
-    bool mapToolbarEnabled = await inspector.isMapToolbarEnabled();
+    bool? mapToolbarEnabled = await inspector.isMapToolbarEnabled();
     expect(mapToolbarEnabled, false);
 
     await tester.pumpWidget(Directionality(
@@ -117,7 +114,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -157,7 +154,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -197,7 +194,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -237,7 +234,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -277,7 +274,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -342,10 +339,10 @@ void main() {
 
     // Making a new `LatLngBounds` about (10, 10) distance south west to the `firstVisibleRegion`.
     // The size of the `LatLngBounds` is 10 by 10.
-    final LatLng southWest = LatLng(firstVisibleRegion.southwest.latitude - 20,
-        firstVisibleRegion.southwest.longitude - 20);
-    final LatLng northEast = LatLng(firstVisibleRegion.southwest.latitude - 10,
-        firstVisibleRegion.southwest.longitude - 10);
+    final LatLng southWest = LatLng(firstVisibleRegion.southwest!.latitude - 20,
+        firstVisibleRegion.southwest!.longitude - 20);
+    final LatLng northEast = LatLng(firstVisibleRegion.southwest!.latitude - 10,
+        firstVisibleRegion.southwest!.longitude - 10);
     final LatLng newCenter = LatLng(
       (northEast.latitude + southWest.latitude) / 2,
       (northEast.longitude + southWest.longitude) / 2,
@@ -390,7 +387,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -415,7 +412,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -441,7 +438,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -484,7 +481,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -512,7 +509,7 @@ void main() {
         onMapCreated: (GoogleMapController controller) {
           final GoogleMapInspector inspector =
               // ignore: invalid_use_of_visible_for_testing_member
-              GoogleMapInspector(controller.channel);
+              GoogleMapInspector(controller.channel!);
           inspectorCompleter.complete(inspector);
         },
       ),
@@ -624,8 +621,8 @@ void main() {
     final LatLng topLeft =
         await controller.getLatLng(const ScreenCoordinate(x: 0, y: 0));
     final LatLng northWest = LatLng(
-      visibleRegion.northeast.latitude,
-      visibleRegion.southwest.longitude,
+      visibleRegion.northeast!.latitude,
+      visibleRegion.southwest!.longitude,
     );
 
     expect(topLeft, northWest);
@@ -658,8 +655,8 @@ void main() {
 
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
     final LatLng northWest = LatLng(
-      visibleRegion.northeast.latitude,
-      visibleRegion.southwest.longitude,
+      visibleRegion.northeast!.latitude,
+      visibleRegion.southwest!.longitude,
     );
     final ScreenCoordinate topLeft =
         await controller.getScreenCoordinate(northWest);

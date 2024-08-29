@@ -9,21 +9,15 @@ import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
 import 'fake_maps_controllers.dart';
 
-Set<Heatmap> _toSet({Heatmap p1, Heatmap p2, Heatmap p3}) {
+Set<Heatmap> _toSet({Heatmap? p1, Heatmap? p2, Heatmap? p3}) {
   final Set<Heatmap> res = Set<Heatmap>.identity();
-  if (p1 != null) {
-    res.add(p1);
-  }
-  if (p2 != null) {
-    res.add(p2);
-  }
-  if (p3 != null) {
-    res.add(p3);
-  }
+  if (p1 != null) res.add(p1);
+  if (p2 != null) res.add(p2);
+  if (p3 != null) res.add(p3);
   return res;
 }
 
-Widget _mapWithHeatmaps(Set<Heatmap> heatmaps) {
+Widget _mapWithHeatmaps(Set<Heatmap>? heatmaps) {
   return Directionality(
     textDirection: TextDirection.ltr,
     child: GoogleMap(
@@ -53,7 +47,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p1)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.heatmapsToAdd.length, 1);
 
     final Heatmap initializedHeatmap = platformGoogleMap.heatmapsToAdd.first;
@@ -70,7 +64,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p1, p2: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.heatmapsToAdd.length, 1);
 
     final Heatmap addedHeatmap = platformGoogleMap.heatmapsToAdd.first;
@@ -88,7 +82,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(null));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.heatmapIdsToRemove.length, 1);
     expect(platformGoogleMap.heatmapIdsToRemove.first, equals(p1.heatmapId));
 
@@ -104,7 +98,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.heatmapsToChange.length, 1);
     expect(platformGoogleMap.heatmapsToChange.first, equals(p2));
 
@@ -121,7 +115,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.heatmapsToChange.length, 1);
 
     final Heatmap update = platformGoogleMap.heatmapsToChange.first;
@@ -138,11 +132,11 @@ void main() {
     );
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p1)));
 
-    p1.points.add(WeightedLatLng(point: LatLng(1.0, 1.0), intensity: 1));
+    p1.points!.add(WeightedLatLng(point: LatLng(1.0, 1.0), intensity: 1));
     await tester.pumpWidget(_mapWithHeatmaps(_toSet(p1: p1)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!!;
     expect(platformGoogleMap.heatmapsToChange.length, 1);
     expect(platformGoogleMap.heatmapsToChange.first, equals(p1));
 
@@ -162,7 +156,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.heatmapsToChange, cur);
     expect(platformGoogleMap.heatmapIdsToRemove.isEmpty, true);
@@ -183,7 +177,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.heatmapsToChange.length, 1);
     expect(platformGoogleMap.heatmapsToAdd.length, 1);
@@ -206,7 +200,7 @@ void main() {
     await tester.pumpWidget(_mapWithHeatmaps(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.heatmapsToChange, _toSet(p3: p3));
     expect(platformGoogleMap.heatmapIdsToRemove.isEmpty, true);

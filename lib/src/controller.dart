@@ -11,7 +11,7 @@ class GoogleMapController {
     CameraPosition initialCameraPosition,
     this._googleMapState,
   ) : assert(channel != null) {
-    channel.setMethodCallHandler(_handleMethodCall);
+    channel!.setMethodCallHandler(_handleMethodCall);
   }
 
   /// Initialize control of a [GoogleMap] with [id].
@@ -19,7 +19,7 @@ class GoogleMapController {
   /// Mainly for internal use when instantiating a [GoogleMapController] passed
   /// in [GoogleMap.onMapCreated] callback.
   static Future<GoogleMapController> init(
-    int id,
+    int? id,
     CameraPosition initialCameraPosition,
     _GoogleMapState googleMapState,
   ) async {
@@ -38,7 +38,7 @@ class GoogleMapController {
   ///
   /// Accessible only for testing.
   @visibleForTesting
-  final MethodChannel channel;
+  final MethodChannel? channel;
 
   final _GoogleMapState _googleMapState;
 
@@ -46,19 +46,19 @@ class GoogleMapController {
     switch (call.method) {
       case 'camera#onMoveStarted':
         if (_googleMapState.widget.onCameraMoveStarted != null) {
-          _googleMapState.widget.onCameraMoveStarted();
+          _googleMapState.widget.onCameraMoveStarted!();
         }
         break;
       case 'camera#onMove':
         if (_googleMapState.widget.onCameraMove != null) {
-          _googleMapState.widget.onCameraMove(
-            CameraPosition.fromMap(call.arguments['position']),
+          _googleMapState.widget.onCameraMove!(
+            CameraPosition.fromMap(call.arguments['position'])!,
           );
         }
         break;
       case 'camera#onIdle':
         if (_googleMapState.widget.onCameraIdle != null) {
-          _googleMapState.widget.onCameraIdle();
+          _googleMapState.widget.onCameraIdle!();
         }
         break;
       case 'marker#onTap':
@@ -98,9 +98,9 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updateMapOptions(Map<String, dynamic> optionsUpdate) async {
+  Future<void> _updateMapOptions(Map<String, dynamic>? optionsUpdate) async {
     assert(optionsUpdate != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'map#update',
       <String, dynamic>{
         'options': optionsUpdate,
@@ -114,11 +114,11 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updateMarkers(_MarkerUpdates markerUpdates) async {
+  Future<void> _updateMarkers(_MarkerUpdates? markerUpdates) async {
     assert(markerUpdates != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'markers#update',
-      markerUpdates._toMap(),
+      markerUpdates?._toMap(),
     );
   }
 
@@ -128,11 +128,11 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updatePolygons(_PolygonUpdates polygonUpdates) async {
+  Future<void> _updatePolygons(_PolygonUpdates? polygonUpdates) async {
     assert(polygonUpdates != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'polygons#update',
-      polygonUpdates._toMap(),
+      polygonUpdates?._toMap(),
     );
   }
 
@@ -142,11 +142,11 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updatePolylines(_PolylineUpdates polylineUpdates) async {
+  Future<void> _updatePolylines(_PolylineUpdates? polylineUpdates) async {
     assert(polylineUpdates != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'polylines#update',
-      polylineUpdates._toMap(),
+      polylineUpdates?._toMap(),
     );
   }
 
@@ -156,11 +156,11 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updateCircles(_CircleUpdates circleUpdates) async {
+  Future<void> _updateCircles(_CircleUpdates? circleUpdates) async {
     assert(circleUpdates != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'circles#update',
-      circleUpdates._toMap(),
+      circleUpdates?._toMap(),
     );
   }
 
@@ -170,11 +170,11 @@ class GoogleMapController {
   /// platform side.
   ///
   /// The returned [Future] completes after listeners have been notified.
-  Future<void> _updateHeatmaps(_HeatmapUpdates heatmapUpdates) async {
+  Future<void> _updateHeatmaps(_HeatmapUpdates? heatmapUpdates) async {
     assert(heatmapUpdates != null);
-    await channel.invokeMethod<void>(
+    await channel?.invokeMethod<void>(
       'heatmaps#update',
-      heatmapUpdates._toMap(),
+      heatmapUpdates?._toMap(),
     );
   }
 
@@ -183,7 +183,7 @@ class GoogleMapController {
   /// The returned [Future] completes after the change has been started on the
   /// platform side.
   Future<void> animateCamera(CameraUpdate cameraUpdate) async {
-    await channel.invokeMethod<void>('camera#animate', <String, dynamic>{
+    await channel?.invokeMethod<void>('camera#animate', <String, dynamic>{
       'cameraUpdate': cameraUpdate._toJson(),
     });
   }
@@ -193,7 +193,7 @@ class GoogleMapController {
   /// The returned [Future] completes after the change has been made on the
   /// platform side.
   Future<void> moveCamera(CameraUpdate cameraUpdate) async {
-    await channel.invokeMethod<void>('camera#move', <String, dynamic>{
+    await channel?.invokeMethod<void>('camera#move', <String, dynamic>{
       'cameraUpdate': cameraUpdate._toJson(),
     });
   }
@@ -211,21 +211,21 @@ class GoogleMapController {
   /// Also, refer [iOS](https://developers.google.com/maps/documentation/ios-sdk/style-reference)
   /// and [Android](https://developers.google.com/maps/documentation/android-sdk/style-reference)
   /// style reference for more information regarding the supported styles.
-  Future<void> setMapStyle(String mapStyle) async {
-    final List<dynamic> successAndError =
-        await channel.invokeMethod<List<dynamic>>('map#setStyle', mapStyle);
-    final bool success = successAndError[0];
+  Future<void> setMapStyle(String? mapStyle) async {
+    final List? successAndError =
+        await channel?.invokeMethod<List<dynamic>>('map#setStyle', mapStyle);
+    final bool success = successAndError?[0];
     if (!success) {
-      throw MapStyleException(successAndError[1]);
+      throw MapStyleException(successAndError?[1]);
     }
   }
 
   /// Return [LatLngBounds] defining the region that is visible in a map.
   Future<LatLngBounds> getVisibleRegion() async {
-    final Map<String, dynamic> latLngBounds =
-        await channel.invokeMapMethod<String, dynamic>('map#getVisibleRegion');
-    final LatLng southwest = LatLng._fromJson(latLngBounds['southwest']);
-    final LatLng northeast = LatLng._fromJson(latLngBounds['northeast']);
+    final Map<String, dynamic>? latLngBounds =
+        await channel?.invokeMapMethod<String, dynamic>('map#getVisibleRegion');
+    final LatLng? southwest = LatLng._fromJson(latLngBounds?['southwest']);
+    final LatLng? northeast = LatLng._fromJson(latLngBounds?['northeast']);
 
     return LatLngBounds(northeast: northeast, southwest: southwest);
   }
@@ -236,9 +236,9 @@ class GoogleMapController {
   /// Screen location is in screen pixels (not display pixels) with respect to the top left corner
   /// of the map, not necessarily of the whole screen.
   Future<ScreenCoordinate> getScreenCoordinate(LatLng latLng) async {
-    final Map<String, int> point = await channel.invokeMapMethod<String, int>(
+    final Map<String, int>? point = await channel?.invokeMapMethod<String, int>(
         'map#getScreenCoordinate', latLng._toJson());
-    return ScreenCoordinate(x: point['x'], y: point['y']);
+    return ScreenCoordinate(x: point!['x']!, y: point['y']!);
   }
 
   /// Returns [LatLng] corresponding to the [ScreenCoordinate] in the current map view.
@@ -246,8 +246,8 @@ class GoogleMapController {
   /// Returned [LatLng] corresponds to a screen location. The screen location is specified in screen
   /// pixels (not display pixels) relative to the top left of the map, not top left of the whole screen.
   Future<LatLng> getLatLng(ScreenCoordinate screenCoordinate) async {
-    final List<dynamic> latLng = await channel.invokeMethod<List<dynamic>>(
+    final List? latLng = await channel?.invokeMethod<List<dynamic>>(
         'map#getLatLng', screenCoordinate._toJson());
-    return LatLng(latLng[0], latLng[1]);
+    return LatLng(latLng?[0], latLng?[1]);
   }
 }

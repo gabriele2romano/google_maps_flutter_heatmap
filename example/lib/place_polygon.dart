@@ -7,9 +7,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class PlacePolygonPage extends Page {
+class PlacePolygonPage extends p.Page {
   PlacePolygonPage() : super(const Icon(Icons.linear_scale), 'Place polygon');
 
   @override
@@ -28,10 +28,10 @@ class PlacePolygonBody extends StatefulWidget {
 class PlacePolygonBodyState extends State<PlacePolygonBody> {
   PlacePolygonBodyState();
 
-  GoogleMapController controller;
+  late GoogleMapController controller;
   Map<PolygonId, Polygon> polygons = <PolygonId, Polygon>{};
   int _polygonIdCounter = 1;
-  PolygonId selectedPolygon;
+  late PolygonId? selectedPolygon;
 
   // Values when toggling polygon color
   int strokeColorsIndex = 0;
@@ -100,45 +100,45 @@ class PlacePolygonBodyState extends State<PlacePolygonBody> {
   }
 
   void _toggleGeodesic() {
-    final Polygon polygon = polygons[selectedPolygon];
+    final Polygon polygon = polygons[selectedPolygon]!;
     setState(() {
-      polygons[selectedPolygon] = polygon.copyWith(
+      polygons[selectedPolygon!] = polygon.copyWith(
         geodesicParam: !polygon.geodesic,
       );
     });
   }
 
   void _toggleVisible() {
-    final Polygon polygon = polygons[selectedPolygon];
+    final Polygon polygon = polygons[selectedPolygon]!;
     setState(() {
-      polygons[selectedPolygon] = polygon.copyWith(
+      polygons[selectedPolygon!] = polygon.copyWith(
         visibleParam: !polygon.visible,
       );
     });
   }
 
   void _changeStrokeColor() {
-    final Polygon polygon = polygons[selectedPolygon];
+    final Polygon polygon = polygons[selectedPolygon]!;
     setState(() {
-      polygons[selectedPolygon] = polygon.copyWith(
+      polygons[selectedPolygon!] = polygon.copyWith(
         strokeColorParam: colors[++strokeColorsIndex % colors.length],
       );
     });
   }
 
   void _changeFillColor() {
-    final Polygon polygon = polygons[selectedPolygon];
+    final Polygon polygon = polygons[selectedPolygon]!;
     setState(() {
-      polygons[selectedPolygon] = polygon.copyWith(
+      polygons[selectedPolygon!] = polygon.copyWith(
         fillColorParam: colors[++fillColorsIndex % colors.length],
       );
     });
   }
 
   void _changeWidth() {
-    final Polygon polygon = polygons[selectedPolygon];
+    final Polygon polygon = polygons[selectedPolygon]!;
     setState(() {
-      polygons[selectedPolygon] = polygon.copyWith(
+      polygons[selectedPolygon!] = polygon.copyWith(
         strokeWidthParam: widths[++widthsIndex % widths.length],
       );
     });
@@ -173,20 +173,20 @@ class PlacePolygonBodyState extends State<PlacePolygonBody> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('add'),
                           onPressed: _add,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('remove'),
                           onPressed: (selectedPolygon == null) ? null : _remove,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle visible'),
                           onPressed:
                               (selectedPolygon == null) ? null : _toggleVisible,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle geodesic'),
                           onPressed: (selectedPolygon == null)
                               ? null
@@ -196,18 +196,18 @@ class PlacePolygonBodyState extends State<PlacePolygonBody> {
                     ),
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change stroke width'),
                           onPressed:
                               (selectedPolygon == null) ? null : _changeWidth,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change stroke color'),
                           onPressed: (selectedPolygon == null)
                               ? null
                               : _changeStrokeColor,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change fill color'),
                           onPressed: (selectedPolygon == null)
                               ? null

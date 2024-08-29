@@ -9,7 +9,7 @@ part of google_maps_flutter_heatmap;
 /// Used in [GoogleMapController] when the map is updated.
 class _MarkerUpdates {
   /// Computes [_MarkerUpdates] given previous and current [Marker]s.
-  _MarkerUpdates.from(Set<Marker> previous, Set<Marker> current) {
+  _MarkerUpdates.from(Set<Marker>? previous, Set<Marker>? current) {
     if (previous == null) {
       previous = Set<Marker>.identity();
     }
@@ -24,26 +24,29 @@ class _MarkerUpdates {
     final Set<MarkerId> prevMarkerIds = previousMarkers.keys.toSet();
     final Set<MarkerId> currentMarkerIds = currentMarkers.keys.toSet();
 
-    Marker idToCurrentMarker(MarkerId id) {
+    Marker? idToCurrentMarker(MarkerId id) {
       return currentMarkers[id];
     }
 
     final Set<MarkerId> _markerIdsToRemove =
         prevMarkerIds.difference(currentMarkerIds);
 
-    final Set<Marker> _markersToAdd = currentMarkerIds
+    final Set<Marker?> _markersToAdd = currentMarkerIds
         .difference(prevMarkerIds)
         .map(idToCurrentMarker)
         .toSet();
 
     /// Returns `true` if [current] is not equals to previous one with the
     /// same id.
-    bool hasChanged(Marker current) {
-      final Marker previous = previousMarkers[current.markerId];
+    bool hasChanged(Marker? current) {
+      if (current == null) {
+        return false;
+      }
+      final Marker? previous = previousMarkers[current.markerId];
       return current != previous;
     }
 
-    final Set<Marker> _markersToChange = currentMarkerIds
+    final Set<Marker?> _markersToChange = currentMarkerIds
         .intersection(prevMarkerIds)
         .map(idToCurrentMarker)
         .where(hasChanged)
@@ -54,9 +57,9 @@ class _MarkerUpdates {
     markersToChange = _markersToChange;
   }
 
-  Set<Marker> markersToAdd;
-  Set<MarkerId> markerIdsToRemove;
-  Set<Marker> markersToChange;
+  late Set<Marker?> markersToAdd;
+  late Set<MarkerId> markerIdsToRemove;
+  late Set<Marker?> markersToChange;
 
   Map<String, dynamic> _toMap() {
     final Map<String, dynamic> updateMap = <String, dynamic>{};
@@ -79,7 +82,7 @@ class _MarkerUpdates {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final _MarkerUpdates typedOther = other;
+    final _MarkerUpdates typedOther = other as _MarkerUpdates;
     return setEquals(markersToAdd, typedOther.markersToAdd) &&
         setEquals(markerIdsToRemove, typedOther.markerIdsToRemove) &&
         setEquals(markersToChange, typedOther.markersToChange);

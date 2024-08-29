@@ -5,14 +5,13 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
 const CameraPosition _kInitialPosition =
     CameraPosition(target: LatLng(-33.852, 151.211), zoom: 11.0);
 
-class MapCoordinatesPage extends Page {
+class MapCoordinatesPage extends p.Page {
   MapCoordinatesPage() : super(const Icon(Icons.map), 'Map coordinates');
 
   @override
@@ -31,7 +30,7 @@ class _MapCoordinatesBody extends StatefulWidget {
 class _MapCoordinatesBodyState extends State<_MapCoordinatesBody> {
   _MapCoordinatesBodyState();
 
-  GoogleMapController mapController;
+  late GoogleMapController mapController;
   LatLngBounds _visibleRegion = LatLngBounds(
     southwest: const LatLng(0, 0),
     northeast: const LatLng(0, 0),
@@ -57,14 +56,12 @@ class _MapCoordinatesBodyState extends State<_MapCoordinatesBody> {
       ),
     ];
 
-    if (mapController != null) {
-      final String currentVisibleRegion = 'VisibleRegion:'
-          '\nnortheast: ${_visibleRegion.northeast},'
-          '\nsouthwest: ${_visibleRegion.southwest}';
-      columnChildren.add(Center(child: Text(currentVisibleRegion)));
-      columnChildren.add(_getVisibleRegionButton());
-    }
-
+    final String currentVisibleRegion = 'VisibleRegion:'
+        '\nnortheast: ${_visibleRegion.northeast},'
+        '\nsouthwest: ${_visibleRegion.southwest}';
+    columnChildren.add(Center(child: Text(currentVisibleRegion)));
+    columnChildren.add(_getVisibleRegionButton());
+  
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -83,7 +80,7 @@ class _MapCoordinatesBodyState extends State<_MapCoordinatesBody> {
   Widget _getVisibleRegionButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: RaisedButton(
+      child: ElevatedButton(
         child: const Text('Get Visible Region Bounds'),
         onPressed: () async {
           final LatLngBounds visibleRegion =

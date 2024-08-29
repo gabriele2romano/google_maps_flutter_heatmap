@@ -6,14 +6,13 @@
 
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class PlaceMarkerPage extends Page {
+class PlaceMarkerPage extends p.Page {
   PlaceMarkerPage() : super(const Icon(Icons.place), 'Place marker');
 
   @override
@@ -35,9 +34,9 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   PlaceMarkerBodyState();
   static final LatLng center = const LatLng(-33.86711, 151.1947171);
 
-  GoogleMapController controller;
+  late GoogleMapController controller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  MarkerId selectedMarker;
+  late MarkerId selectedMarker;
   int _markerIdCounter = 1;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -50,50 +49,46 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   void _onMarkerTapped(MarkerId markerId) {
-    final Marker tappedMarker = markers[markerId];
-    if (tappedMarker != null) {
-      setState(() {
-        if (markers.containsKey(selectedMarker)) {
-          final Marker resetOld = markers[selectedMarker]
-              .copyWith(iconParam: BitmapDescriptor.defaultMarker);
-          markers[selectedMarker] = resetOld;
-        }
-        selectedMarker = markerId;
-        final Marker newMarker = tappedMarker.copyWith(
-          iconParam: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueGreen,
-          ),
-        );
-        markers[markerId] = newMarker;
-      });
+    final Marker tappedMarker = markers[markerId]!;
+    setState(() {
+      if (markers.containsKey(selectedMarker)) {
+        final Marker resetOld = markers[selectedMarker]!
+            .copyWith(iconParam: BitmapDescriptor.defaultMarker);
+        markers[selectedMarker] = resetOld;
+      }
+      selectedMarker = markerId;
+      final Marker newMarker = tappedMarker.copyWith(
+        iconParam: BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueGreen,
+        ),
+      );
+      markers[markerId] = newMarker;
+    });
     }
-  }
 
   void _onMarkerDragEnd(MarkerId markerId, LatLng newPosition) async {
-    final Marker tappedMarker = markers[markerId];
-    if (tappedMarker != null) {
-      await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
-                content: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 66),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Old position: ${tappedMarker.position}'),
-                        Text('New position: $newPosition'),
-                      ],
-                    )));
-          });
+    final Marker tappedMarker = markers[markerId]!;
+    await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              actions: <Widget>[
+                FilledButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+              content: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 66),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('Old position: ${tappedMarker.position}'),
+                      Text('New position: $newPosition'),
+                    ],
+                  )));
+        });
     }
-  }
 
   void _add() {
     final int markerCount = markers.length;
@@ -135,7 +130,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   void _changePosition() {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     final LatLng current = marker.position;
     final Offset offset = Offset(
       center.latitude - current.latitude,
@@ -152,7 +147,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   void _changeAnchor() {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     final Offset currentAnchor = marker.anchor;
     final Offset newAnchor = Offset(1.0 - currentAnchor.dy, currentAnchor.dx);
     setState(() {
@@ -163,8 +158,8 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _changeInfoAnchor() async {
-    final Marker marker = markers[selectedMarker];
-    final Offset currentAnchor = marker.infoWindow.anchor;
+    final Marker marker = markers[selectedMarker]!;
+    final Offset currentAnchor = marker.infoWindow.anchor!;
     final Offset newAnchor = Offset(1.0 - currentAnchor.dy, currentAnchor.dx);
     setState(() {
       markers[selectedMarker] = marker.copyWith(
@@ -176,7 +171,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _toggleDraggable() async {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
         draggableParam: !marker.draggable,
@@ -185,7 +180,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _toggleFlat() async {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
         flatParam: !marker.flat,
@@ -194,8 +189,8 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _changeInfo() async {
-    final Marker marker = markers[selectedMarker];
-    final String newSnippet = marker.infoWindow.snippet + '*';
+    final Marker marker = markers[selectedMarker]!;
+    final String newSnippet = marker.infoWindow.snippet! + '*';
     setState(() {
       markers[selectedMarker] = marker.copyWith(
         infoWindowParam: marker.infoWindow.copyWith(
@@ -206,8 +201,8 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _changeAlpha() async {
-    final Marker marker = markers[selectedMarker];
-    final double current = marker.alpha;
+    final Marker marker = markers[selectedMarker]!;
+    final double current = marker.alpha!;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
         alphaParam: current < 0.1 ? 1.0 : current * 0.75,
@@ -216,7 +211,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _changeRotation() async {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     final double current = marker.rotation;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
@@ -226,7 +221,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _toggleVisible() async {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
         visibleParam: !marker.visible,
@@ -235,7 +230,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _changeZIndex() async {
-    final Marker marker = markers[selectedMarker];
+    final Marker marker = markers[selectedMarker]!;
     final double current = marker.zIndex;
     setState(() {
       markers[selectedMarker] = marker.copyWith(
@@ -313,19 +308,19 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('add'),
                           onPressed: _add,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('remove'),
                           onPressed: _remove,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change info'),
                           onPressed: _changeInfo,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change info anchor'),
                           onPressed: _changeInfoAnchor,
                         ),
@@ -333,35 +328,35 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                     ),
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change alpha'),
                           onPressed: _changeAlpha,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change anchor'),
                           onPressed: _changeAnchor,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle draggable'),
                           onPressed: _toggleDraggable,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle flat'),
                           onPressed: _toggleFlat,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change position'),
                           onPressed: _changePosition,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change rotation'),
                           onPressed: _changeRotation,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle visible'),
                           onPressed: _toggleVisible,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change zIndex'),
                           onPressed: _changeZIndex,
                         ),
@@ -371,7 +366,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                         // TODO(amirh): uncomment this one the ImageStream API change makes it to stable.
                         // https://github.com/flutter/flutter/issues/33438
                         //
-                        // FlatButton(
+                        // FilledButton(
                         //   child: const Text('set marker icon'),
                         //   onPressed: () {
                         //     _getAssetIcon(context).then(

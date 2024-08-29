@@ -58,7 +58,7 @@ class BitmapDescriptor {
   /// Use [fromAssetImage]. This method does not respect the screen dpi when
   /// picking an asset image.
   @Deprecated("Use fromAssetImage instead")
-  static BitmapDescriptor fromAsset(String assetName, {String package}) {
+  static BitmapDescriptor fromAsset(String assetName, {String? package}) {
     if (package == null) {
       return BitmapDescriptor._(<dynamic>['fromAsset', assetName]);
     } else {
@@ -75,8 +75,8 @@ class BitmapDescriptor {
   static Future<BitmapDescriptor> fromAssetImage(
     ImageConfiguration configuration,
     String assetName, {
-    AssetBundle bundle,
-    String package,
+    AssetBundle? bundle,
+    String? package,
   }) async {
     if (configuration.devicePixelRatio != null) {
       return BitmapDescriptor._(<dynamic>[

@@ -9,7 +9,7 @@ part of google_maps_flutter_heatmap;
 /// Used in [GoogleMapController] when the map is updated.
 class _CircleUpdates {
   /// Computes [_CircleUpdates] given previous and current [Circle]s.
-  _CircleUpdates.from(Set<Circle> previous, Set<Circle> current) {
+  _CircleUpdates.from(Set<Circle>? previous, Set<Circle>? current) {
     if (previous == null) {
       previous = Set<Circle>.identity();
     }
@@ -24,26 +24,26 @@ class _CircleUpdates {
     final Set<CircleId> prevCircleIds = previousCircles.keys.toSet();
     final Set<CircleId> currentCircleIds = currentCircles.keys.toSet();
 
-    Circle idToCurrentCircle(CircleId id) {
+    Circle? idToCurrentCircle(CircleId id) {
       return currentCircles[id];
     }
 
     final Set<CircleId> _circleIdsToRemove =
         prevCircleIds.difference(currentCircleIds);
 
-    final Set<Circle> _circlesToAdd = currentCircleIds
+    final Set<Circle?> _circlesToAdd = currentCircleIds
         .difference(prevCircleIds)
         .map(idToCurrentCircle)
         .toSet();
 
     /// Returns `true` if [current] is not equals to previous one with the
     /// same id.
-    bool hasChanged(Circle current) {
-      final Circle previous = previousCircles[current.circleId];
+    bool hasChanged(Circle? current) {
+      final Circle? previous = previousCircles[current!.circleId];
       return current != previous;
     }
 
-    final Set<Circle> _circlesToChange = currentCircleIds
+    final Set<Circle?> _circlesToChange = currentCircleIds
         .intersection(prevCircleIds)
         .map(idToCurrentCircle)
         .where(hasChanged)
@@ -54,9 +54,9 @@ class _CircleUpdates {
     circlesToChange = _circlesToChange;
   }
 
-  Set<Circle> circlesToAdd;
-  Set<CircleId> circleIdsToRemove;
-  Set<Circle> circlesToChange;
+  late Set<Circle?> circlesToAdd;
+  late Set<CircleId?> circleIdsToRemove;
+  late Set<Circle?> circlesToChange;
 
   Map<String, dynamic> _toMap() {
     final Map<String, dynamic> updateMap = <String, dynamic>{};
@@ -70,7 +70,7 @@ class _CircleUpdates {
     addIfNonNull('circlesToAdd', _serializeCircleSet(circlesToAdd));
     addIfNonNull('circlesToChange', _serializeCircleSet(circlesToChange));
     addIfNonNull('circleIdsToRemove',
-        circleIdsToRemove.map<dynamic>((CircleId m) => m.value).toList());
+        circleIdsToRemove.map<dynamic>((CircleId? m) => m!.value).toList());
 
     return updateMap;
   }
@@ -79,7 +79,7 @@ class _CircleUpdates {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final _CircleUpdates typedOther = other;
+    final _CircleUpdates typedOther = other as _CircleUpdates;
     return setEquals(circlesToAdd, typedOther.circlesToAdd) &&
         setEquals(circleIdsToRemove, typedOther.circleIdsToRemove) &&
         setEquals(circlesToChange, typedOther.circlesToChange);

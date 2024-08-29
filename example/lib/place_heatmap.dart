@@ -9,9 +9,9 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class PlaceHeatmapPage extends Page {
+class PlaceHeatmapPage extends p.Page {
   PlaceHeatmapPage() : super(const Icon(Icons.linear_scale), 'Place heatmap');
 
   @override
@@ -30,10 +30,10 @@ class PlaceHeatmapBody extends StatefulWidget {
 class PlaceHeatmapBodyState extends State<PlaceHeatmapBody> {
   PlaceHeatmapBodyState();
 
-  GoogleMapController controller;
+  late GoogleMapController controller;
   Map<HeatmapId, Heatmap> heatmaps = <HeatmapId, Heatmap>{};
   int _heatmapIdCounter = 1;
-  HeatmapId currentHeatmap;
+  late HeatmapId? currentHeatmap;
 
   // Values when changing heatmap gradient.
   int gradientsIndex = 0;
@@ -106,36 +106,36 @@ class PlaceHeatmapBodyState extends State<PlaceHeatmapBody> {
   }
 
   void _changeGradient() {
-    final Heatmap heatmap = heatmaps[currentHeatmap];
+    final Heatmap heatmap = heatmaps[currentHeatmap]!;
     setState(() {
-      heatmaps[currentHeatmap] = heatmap.copyWith(
+      heatmaps[currentHeatmap!] = heatmap.copyWith(
         gradientParam: gradients[++gradientsIndex % gradients.length],
       );
     });
   }
 
   void _changeOpacity() {
-    final Heatmap heatmap = heatmaps[currentHeatmap];
+    final Heatmap heatmap = heatmaps[currentHeatmap]!;
     setState(() {
-      heatmaps[currentHeatmap] = heatmap.copyWith(
+      heatmaps[currentHeatmap!] = heatmap.copyWith(
         opacityParam: opacities[++opacitiesIndex % opacities.length],
       );
     });
   }
 
   void _changeRadius() {
-    final Heatmap heatmap = heatmaps[currentHeatmap];
+    final Heatmap heatmap = heatmaps[currentHeatmap]!;
     setState(() {
-      heatmaps[currentHeatmap] = heatmap.copyWith(
+      heatmaps[currentHeatmap!] = heatmap.copyWith(
         radiusParam: radii[++radiiIndex % radii.length],
       );
     });
   }
 
   void _changeTransparency() {
-    final Heatmap heatmap = heatmaps[currentHeatmap];
+    final Heatmap heatmap = heatmaps[currentHeatmap]!;
     setState(() {
-      heatmaps[currentHeatmap] = heatmap.copyWith(
+      heatmaps[currentHeatmap!] = heatmap.copyWith(
         transparencyParam:
             transparencies[++transparenciesIndex % transparencies.length],
       );
@@ -143,9 +143,9 @@ class PlaceHeatmapBodyState extends State<PlaceHeatmapBody> {
   }
 
   void _toggleVisible() {
-    final Heatmap heatmap = heatmaps[currentHeatmap];
+    final Heatmap heatmap = heatmaps[currentHeatmap]!;
     setState(() {
-      heatmaps[currentHeatmap] = heatmap.copyWith(
+      heatmaps[currentHeatmap!] = heatmap.copyWith(
         visibleParam: !heatmap.visible,
       );
     });
@@ -182,15 +182,15 @@ class PlaceHeatmapBodyState extends State<PlaceHeatmapBody> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('add'),
                           onPressed: _add,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('remove'),
                           onPressed: (currentHeatmap == null) ? null : _remove,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('toggle visible'),
                           onPressed:
                               (currentHeatmap == null) ? null : _toggleVisible,
@@ -199,22 +199,22 @@ class PlaceHeatmapBodyState extends State<PlaceHeatmapBody> {
                     ),
                     Column(
                       children: <Widget>[
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change gradient'),
                           onPressed:
                               (currentHeatmap == null) ? null : _changeGradient,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change opacity'),
                           onPressed:
                               (currentHeatmap == null) ? null : _changeOpacity,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text('change radius'),
                           onPressed:
                               (currentHeatmap == null) ? null : _changeRadius,
                         ),
-                        FlatButton(
+                        FilledButton(
                           child: const Text(
                               'change transparencies [android only]'),
                           onPressed:

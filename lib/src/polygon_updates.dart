@@ -9,7 +9,7 @@ part of google_maps_flutter_heatmap;
 /// Used in [GoogleMapController] when the map is updated.
 class _PolygonUpdates {
   /// Computes [_PolygonUpdates] given previous and current [Polygon]s.
-  _PolygonUpdates.from(Set<Polygon> previous, Set<Polygon> current) {
+  _PolygonUpdates.from(Set<Polygon>? previous, Set<Polygon>? current) {
     if (previous == null) {
       previous = Set<Polygon>.identity();
     }
@@ -24,26 +24,29 @@ class _PolygonUpdates {
     final Set<PolygonId> prevPolygonIds = previousPolygons.keys.toSet();
     final Set<PolygonId> currentPolygonIds = currentPolygons.keys.toSet();
 
-    Polygon idToCurrentPolygon(PolygonId id) {
+    Polygon? idToCurrentPolygon(PolygonId id) {
       return currentPolygons[id];
     }
 
     final Set<PolygonId> _polygonIdsToRemove =
         prevPolygonIds.difference(currentPolygonIds);
 
-    final Set<Polygon> _polygonsToAdd = currentPolygonIds
+    final Set<Polygon?> _polygonsToAdd = currentPolygonIds
         .difference(prevPolygonIds)
         .map(idToCurrentPolygon)
         .toSet();
 
     /// Returns `true` if [current] is not equals to previous one with the
     /// same id.
-    bool hasChanged(Polygon current) {
-      final Polygon previous = previousPolygons[current.polygonId];
+    bool hasChanged(Polygon? current) {
+      if (current == null) {
+        return false;
+      }
+      final Polygon? previous = previousPolygons[current.polygonId];
       return current != previous;
     }
 
-    final Set<Polygon> _polygonsToChange = currentPolygonIds
+    final Set<Polygon?> _polygonsToChange = currentPolygonIds
         .intersection(prevPolygonIds)
         .map(idToCurrentPolygon)
         .where(hasChanged)
@@ -54,9 +57,9 @@ class _PolygonUpdates {
     polygonsToChange = _polygonsToChange;
   }
 
-  Set<Polygon> polygonsToAdd;
-  Set<PolygonId> polygonIdsToRemove;
-  Set<Polygon> polygonsToChange;
+  late Set<Polygon?> polygonsToAdd;
+  late Set<PolygonId> polygonIdsToRemove;
+  late Set<Polygon?> polygonsToChange;
 
   Map<String, dynamic> _toMap() {
     final Map<String, dynamic> updateMap = <String, dynamic>{};
@@ -79,7 +82,7 @@ class _PolygonUpdates {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final _PolygonUpdates typedOther = other;
+    final _PolygonUpdates typedOther = other as _PolygonUpdates;
     return setEquals(polygonsToAdd, typedOther.polygonsToAdd) &&
         setEquals(polygonIdsToRemove, typedOther.polygonIdsToRemove) &&
         setEquals(polygonsToChange, typedOther.polygonsToChange);

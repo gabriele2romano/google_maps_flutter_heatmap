@@ -7,12 +7,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class ScrollingMapPage extends Page {
+class ScrollingMapPage extends p.Page {
   ScrollingMapPage() : super(const Icon(Icons.map), 'Scrolling map');
 
   @override

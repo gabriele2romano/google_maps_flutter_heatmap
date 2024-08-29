@@ -19,8 +19,9 @@ import 'place_polygon.dart';
 import 'place_polyline.dart';
 import 'place_heatmap.dart';
 import 'scrolling_map.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-final List<Page> _allPages = <Page>[
+final List<p.Page> _allPages = <p.Page>[
   MapUiPage(),
   MapCoordinatesPage(),
   MapClickPage(),
@@ -37,7 +38,7 @@ final List<Page> _allPages = <Page>[
 ];
 
 class MapsDemo extends StatelessWidget {
-  void _pushPage(BuildContext context, Page page) {
+  void _pushPage(BuildContext context, p.Page page) {
     Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (_) => Scaffold(
               appBar: AppBar(title: Text(page.title)),

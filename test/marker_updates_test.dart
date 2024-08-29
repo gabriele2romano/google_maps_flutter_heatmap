@@ -9,21 +9,15 @@ import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
 import 'fake_maps_controllers.dart';
 
-Set<Marker> _toSet({Marker m1, Marker m2, Marker m3}) {
+Set<Marker> _toSet({Marker? m1, Marker? m2, Marker? m3}) {
   final Set<Marker> res = Set<Marker>.identity();
-  if (m1 != null) {
-    res.add(m1);
-  }
-  if (m2 != null) {
-    res.add(m2);
-  }
-  if (m3 != null) {
-    res.add(m3);
-  }
+  if (m1 != null) res.add(m1);
+  if (m2 != null) res.add(m2);
+  if (m3 != null) res.add(m3);
   return res;
 }
 
-Widget _mapWithMarkers(Set<Marker> markers) {
+Widget _mapWithMarkers(Set<Marker>? markers) {
   return Directionality(
     textDirection: TextDirection.ltr,
     child: GoogleMap(
@@ -53,7 +47,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(_toSet(m1: m1)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.markersToAdd.length, 1);
 
     final Marker initializedMarker = platformGoogleMap.markersToAdd.first;
@@ -70,7 +64,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(_toSet(m1: m1, m2: m2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.markersToAdd.length, 1);
 
     final Marker addedMarker = platformGoogleMap.markersToAdd.first;
@@ -88,7 +82,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(null));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.markerIdsToRemove.length, 1);
     expect(platformGoogleMap.markerIdsToRemove.first, equals(m1.markerId));
 
@@ -104,7 +98,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(_toSet(m1: m2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.markersToChange.length, 1);
     expect(platformGoogleMap.markersToChange.first, equals(m2));
 
@@ -123,7 +117,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(_toSet(m1: m2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.markersToChange.length, 1);
 
     final Marker update = platformGoogleMap.markersToChange.first;
@@ -143,7 +137,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.markersToChange, cur);
     expect(platformGoogleMap.markerIdsToRemove.isEmpty, true);
@@ -164,7 +158,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.markersToChange.length, 1);
     expect(platformGoogleMap.markersToAdd.length, 1);
@@ -187,7 +181,7 @@ void main() {
     await tester.pumpWidget(_mapWithMarkers(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.markersToChange, _toSet(m3: m3));
     expect(platformGoogleMap.markerIdsToRemove.isEmpty, true);

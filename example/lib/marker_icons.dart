@@ -8,9 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class MarkerIconsPage extends Page {
+class MarkerIconsPage extends p.Page {
   MarkerIconsPage() : super(const Icon(Icons.image), 'Marker icons');
 
   @override
@@ -29,8 +29,8 @@ class MarkerIconsBody extends StatefulWidget {
 const LatLng _kMapCenter = LatLng(52.4478, -3.5402);
 
 class MarkerIconsBodyState extends State<MarkerIconsBody> {
-  GoogleMapController controller;
-  BitmapDescriptor _markerIcon;
+  late GoogleMapController controller;
+  late BitmapDescriptor _markerIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +71,7 @@ class MarkerIconsBodyState extends State<MarkerIconsBody> {
   }
 
   Future<void> _createMarkerImageFromAsset(BuildContext context) async {
-    if (_markerIcon == null) {
-      final ImageConfiguration imageConfiguration =
-          createLocalImageConfiguration(context);
-      BitmapDescriptor.fromAssetImage(
-              imageConfiguration, 'assets/red_square.png')
-          .then(_updateBitmap);
-    }
+    
   }
 
   void _updateBitmap(BitmapDescriptor bitmap) {

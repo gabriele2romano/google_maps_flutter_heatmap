@@ -7,9 +7,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
-class MoveCameraPage extends Page {
+class MoveCameraPage extends p.Page {
   MoveCameraPage() : super(const Icon(Icons.map), 'Camera control');
 
   @override
@@ -25,7 +25,7 @@ class MoveCamera extends StatefulWidget {
 }
 
 class MoveCameraState extends State<MoveCamera> {
-  GoogleMapController mapController;
+  late GoogleMapController mapController;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -53,7 +53,7 @@ class MoveCameraState extends State<MoveCamera> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.newCameraPosition(
@@ -68,7 +68,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('newCameraPosition'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.newLatLng(
@@ -78,7 +78,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('newLatLng'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.newLatLngBounds(
@@ -92,7 +92,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('newLatLngBounds'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.newLatLngZoom(
@@ -103,7 +103,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('newLatLngZoom'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.scrollBy(150.0, -225.0),
@@ -115,7 +115,7 @@ class MoveCameraState extends State<MoveCamera> {
             ),
             Column(
               children: <Widget>[
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.zoomBy(
@@ -126,7 +126,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('zoomBy with focus'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.zoomBy(-0.5),
@@ -134,7 +134,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('zoomBy'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.zoomIn(),
@@ -142,7 +142,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('zoomIn'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.zoomOut(),
@@ -150,7 +150,7 @@ class MoveCameraState extends State<MoveCamera> {
                   },
                   child: const Text('zoomOut'),
                 ),
-                FlatButton(
+                FilledButton(
                   onPressed: () {
                     mapController.moveCamera(
                       CameraUpdate.zoomTo(16.0),

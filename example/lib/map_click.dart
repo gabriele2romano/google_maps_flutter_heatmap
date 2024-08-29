@@ -5,14 +5,13 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'page.dart';
+import 'package:google_maps_flutter_heatmap_example/page.dart' as p;
 
 const CameraPosition _kInitialPosition =
     CameraPosition(target: LatLng(-33.852, 151.211), zoom: 11.0);
 
-class MapClickPage extends Page {
+class MapClickPage extends p.Page {
   MapClickPage() : super(const Icon(Icons.mouse), 'Map click');
 
   @override
@@ -31,10 +30,11 @@ class _MapClickBody extends StatefulWidget {
 class _MapClickBodyState extends State<_MapClickBody> {
   _MapClickBodyState();
 
-  GoogleMapController mapController;
-  LatLng _lastTap;
-  LatLng _lastLongPress;
+  late GoogleMapController mapController;
+  late LatLng _lastTap;
+  late LatLng _lastLongPress;
 
+  
   @override
   Widget build(BuildContext context) {
     final GoogleMap googleMap = GoogleMap(
@@ -65,18 +65,16 @@ class _MapClickBodyState extends State<_MapClickBody> {
       ),
     ];
 
-    if (mapController != null) {
-      final String lastTap = 'Tap:\n${_lastTap ?? ""}\n';
-      final String lastLongPress = 'Long press:\n${_lastLongPress ?? ""}';
-      columnChildren
-          .add(Center(child: Text(lastTap, textAlign: TextAlign.center)));
-      columnChildren.add(Center(
-          child: Text(
-        lastLongPress,
-        textAlign: TextAlign.center,
-      )));
-    }
-
+    final String lastTap = 'Tap:\n${_lastTap ?? ""}\n';
+    final String lastLongPress = 'Long press:\n${_lastLongPress ?? ""}';
+    columnChildren
+        .add(Center(child: Text(lastTap, textAlign: TextAlign.center)));
+    columnChildren.add(Center(
+        child: Text(
+      lastLongPress,
+      textAlign: TextAlign.center,
+    )));
+  
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,

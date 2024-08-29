@@ -9,21 +9,15 @@ import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
 import 'fake_maps_controllers.dart';
 
-Set<Polygon> _toSet({Polygon p1, Polygon p2, Polygon p3}) {
+Set<Polygon> _toSet({Polygon? p1, Polygon? p2, Polygon? p3}) {
   final Set<Polygon> res = Set<Polygon>.identity();
-  if (p1 != null) {
-    res.add(p1);
-  }
-  if (p2 != null) {
-    res.add(p2);
-  }
-  if (p3 != null) {
-    res.add(p3);
-  }
+  if (p1 != null) res.add(p1);
+  if (p2 != null) res.add(p2);
+  if (p3 != null) res.add(p3);
   return res;
 }
 
-Widget _mapWithPolygons(Set<Polygon> polygons) {
+Widget _mapWithPolygons(Set<Polygon>? polygons) {
   return Directionality(
     textDirection: TextDirection.ltr,
     child: GoogleMap(
@@ -53,7 +47,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p1)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonsToAdd.length, 1);
 
     final Polygon initializedPolygon = platformGoogleMap.polygonsToAdd.first;
@@ -70,7 +64,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p1, p2: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonsToAdd.length, 1);
 
     final Polygon addedPolygon = platformGoogleMap.polygonsToAdd.first;
@@ -88,7 +82,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(null));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonIdsToRemove.length, 1);
     expect(platformGoogleMap.polygonIdsToRemove.first, equals(p1.polygonId));
 
@@ -105,7 +99,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonsToChange.length, 1);
     expect(platformGoogleMap.polygonsToChange.first, equals(p2));
 
@@ -122,7 +116,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p2)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonsToChange.length, 1);
 
     final Polygon update = platformGoogleMap.polygonsToChange.first;
@@ -137,11 +131,11 @@ void main() {
     );
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p1)));
 
-    p1.points.add(const LatLng(1.0, 1.0));
+    p1.points!.add(const LatLng(1.0, 1.0));
     await tester.pumpWidget(_mapWithPolygons(_toSet(p1: p1)));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
     expect(platformGoogleMap.polygonsToChange.length, 1);
     expect(platformGoogleMap.polygonsToChange.first, equals(p1));
 
@@ -161,7 +155,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.polygonsToChange, cur);
     expect(platformGoogleMap.polygonIdsToRemove.isEmpty, true);
@@ -182,7 +176,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.polygonsToChange.length, 1);
     expect(platformGoogleMap.polygonsToAdd.length, 1);
@@ -205,7 +199,7 @@ void main() {
     await tester.pumpWidget(_mapWithPolygons(cur));
 
     final FakePlatformGoogleMap platformGoogleMap =
-        fakePlatformViewsController.lastCreatedView;
+        fakePlatformViewsController.lastCreatedView!;
 
     expect(platformGoogleMap.polygonsToChange, _toSet(p3: p3));
     expect(platformGoogleMap.polygonIdsToRemove.isEmpty, true);

@@ -15,7 +15,7 @@ class CameraPosition {
   /// null.
   const CameraPosition({
     this.bearing = 0.0,
-    @required this.target,
+    required this.target,
     this.tilt = 0.0,
     this.zoom = 0.0,
   })  : assert(bearing != null),
@@ -27,10 +27,10 @@ class CameraPosition {
   ///
   /// A bearing of 0.0, the default, means the camera points north.
   /// A bearing of 90.0 means the camera points east.
-  final double bearing;
+  final double? bearing;
 
   /// The geographical location that the camera is pointing at.
-  final LatLng target;
+  final LatLng? target;
 
   /// The angle, in degrees, of the camera angle from the nadir.
   ///
@@ -40,7 +40,7 @@ class CameraPosition {
   /// The maximum tilt value depends on the current zoom level. Values beyond
   /// the supported range are allowed, but on applying them to a map they will
   /// be silently clamped to the supported range.
-  final double tilt;
+  final double? tilt;
 
   /// The zoom level of the camera.
   ///
@@ -54,14 +54,14 @@ class CameraPosition {
   /// The supported zoom level range depends on the map data and device. Values
   /// beyond the supported range are allowed, but on applying them to a map they
   /// will be silently clamped to the supported range.
-  final double zoom;
+  final double? zoom;
 
   /// Serializes [CameraPosition].
   ///
   /// Mainly for internal use when calling [CameraUpdate.newCameraPosition].
   dynamic toMap() => <String, dynamic>{
         'bearing': bearing,
-        'target': target._toJson(),
+        'target': target!._toJson(),
         'tilt': tilt,
         'zoom': zoom,
       };
@@ -69,7 +69,7 @@ class CameraPosition {
   /// Deserializes [CameraPosition] from a map.
   ///
   /// Mainly for internal use.
-  static CameraPosition fromMap(dynamic json) {
+  static CameraPosition? fromMap(dynamic json) {
     if (json == null) {
       return null;
     }
@@ -153,7 +153,7 @@ class CameraUpdate {
   /// Returns a camera update that modifies the camera zoom level by the
   /// specified amount. The optional [focus] is a screen point whose underlying
   /// geographical location should be invariant, if possible, by the movement.
-  static CameraUpdate zoomBy(double amount, [Offset focus]) {
+  static CameraUpdate zoomBy(double amount, [Offset? focus]) {
     if (focus == null) {
       return CameraUpdate._(<dynamic>['zoomBy', amount]);
     } else {
